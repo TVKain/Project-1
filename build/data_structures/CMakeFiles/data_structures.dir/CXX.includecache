@@ -1,0 +1,16 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../data_structures/include/test.hpp
+
+/mnt/c/Users/tvkain/Desktop/project-1/data_structures/src/test.cpp
+iostream
+-
+test.hpp
+/mnt/c/Users/tvkain/Desktop/project-1/data_structures/src/test.hpp
+
