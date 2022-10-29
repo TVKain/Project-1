@@ -5,4 +5,3 @@
 /mnt/c/Users/tvkain/Desktop/project-1/build/data_structures/CMakeFiles/edit_cache.dir
 /mnt/c/Users/tvkain/Desktop/project-1/build/algorithms/CMakeFiles/rebuild_cache.dir
 /mnt/c/Users/tvkain/Desktop/project-1/build/algorithms/CMakeFiles/edit_cache.dir
-/mnt/c/Users/tvkain/Desktop/project-1/build/algorithms/CMakeFiles/algorithms.dir

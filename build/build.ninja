@@ -59,7 +59,7 @@ build edit_cache: phony CMakeFiles/edit_cache.util
 #############################################
 # Order-only phony target for project1-1
 
-build cmake_object_order_depends_target_project1-1: phony || cmake_object_order_depends_target_algorithms
+build cmake_object_order_depends_target_project1-1: phony || CMakeFiles/project1-1.dir
 
 build CMakeFiles/project1-1.dir/src/main.cpp.o: CXX_COMPILER__project1-1 ../src/main.cpp || cmake_object_order_depends_target_project1-1
   DEP_FILE = CMakeFiles/project1-1.dir/src/main.cpp.o.d
@@ -77,8 +77,7 @@ build CMakeFiles/project1-1.dir/src/main.cpp.o: CXX_COMPILER__project1-1 ../src/
 #############################################
 # Link the executable main
 
-build main: CXX_EXECUTABLE_LINKER__project1-1 CMakeFiles/project1-1.dir/src/main.cpp.o | algorithms/libalgorithms.a || algorithms/libalgorithms.a
-  LINK_LIBRARIES = algorithms/libalgorithms.a
+build main: CXX_EXECUTABLE_LINKER__project1-1 CMakeFiles/project1-1.dir/src/main.cpp.o
   OBJECT_DIR = CMakeFiles/project1-1.dir
   POST_BUILD = :
   PRE_LINK = :
@@ -143,44 +142,7 @@ build algorithms/CMakeFiles/edit_cache.util: CUSTOM_COMMAND
 build algorithms/edit_cache: phony algorithms/CMakeFiles/edit_cache.util
 
 # =============================================================================
-# Object build statements for STATIC_LIBRARY target algorithms
-
-
-#############################################
-# Order-only phony target for algorithms
-
-build cmake_object_order_depends_target_algorithms: phony || algorithms/CMakeFiles/algorithms.dir
-
-build algorithms/CMakeFiles/algorithms.dir/src/sorting.cpp.o: CXX_COMPILER__algorithms ../algorithms/src/sorting.cpp || cmake_object_order_depends_target_algorithms
-  DEP_FILE = algorithms/CMakeFiles/algorithms.dir/src/sorting.cpp.o.d
-  INCLUDES = -I../algorithms/include
-  OBJECT_DIR = algorithms/CMakeFiles/algorithms.dir
-  OBJECT_FILE_DIR = algorithms/CMakeFiles/algorithms.dir/src
-  TARGET_COMPILE_PDB = algorithms/CMakeFiles/algorithms.dir/algorithms.pdb
-  TARGET_PDB = algorithms/libalgorithms.pdb
-
-
-# =============================================================================
-# Link build statements for STATIC_LIBRARY target algorithms
-
-
-#############################################
-# Link the static library algorithms/libalgorithms.a
-
-build algorithms/libalgorithms.a: CXX_STATIC_LIBRARY_LINKER__algorithms algorithms/CMakeFiles/algorithms.dir/src/sorting.cpp.o
-  OBJECT_DIR = algorithms/CMakeFiles/algorithms.dir
-  POST_BUILD = :
-  PRE_LINK = :
-  TARGET_COMPILE_PDB = algorithms/CMakeFiles/algorithms.dir/algorithms.pdb
-  TARGET_FILE = algorithms/libalgorithms.a
-  TARGET_PDB = algorithms/libalgorithms.pdb
-
-# =============================================================================
 # Target aliases.
-
-build algorithms: phony algorithms/libalgorithms.a
-
-build libalgorithms.a: phony algorithms/libalgorithms.a
 
 build project1-1: phony main
 
@@ -199,7 +161,7 @@ build all: phony main data_structures/all algorithms/all
 #############################################
 # Folder: /mnt/c/Users/tvkain/Desktop/project-1/build/algorithms
 
-build algorithms/all: phony algorithms/libalgorithms.a
+build algorithms/all: phony
 
 # =============================================================================
 
