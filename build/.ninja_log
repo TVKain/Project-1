@@ -1,0 +1,4 @@
+# ninja log v5
+33	284	1667055002136280800	algorithms/CMakeFiles/algorithms.dir/src/sorting.cpp.o	afb0bad057ae79c4
+312	476	1667055002322178400	algorithms/libalgorithms.a	ddc58044e73a77d
+28	1768	1667055003624479000	CMakeFiles/project1-1.dir/src/main.cpp.o	cf85513434fd67f9
