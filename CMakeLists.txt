@@ -9,5 +9,5 @@ add_executable(${PROJECT_NAME} src/main.cpp)
 set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "main")
 
 target_link_libraries(${PROJECT_NAME}
-  ds::test
+  ds::array_list
 )

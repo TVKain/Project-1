@@ -1,9 +1,9 @@
 project(data_structures)
 
-add_library(${PROJECT_NAME} src/test.cpp)
+add_library(${PROJECT_NAME} INTERFACE)
 
-add_library(ds::test ALIAS ${PROJECT_NAME})
+add_library(ds::array_list ALIAS ${PROJECT_NAME})
 
 target_include_directories( ${PROJECT_NAME}
-  PUBLIC ${PROJECT_SOURCE_DIR}/include
+  INTERFACE ${PROJECT_SOURCE_DIR}/include
 )
