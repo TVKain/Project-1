@@ -1,20 +1,30 @@
 #include <iostream>
 #include <string>
 #include <algorithm>
+#include <cmath>
+#include <utility>
 
 #include "array_list.hpp"
-#include "sorting.hpp"
+#include "sort.hpp"
 
-int main() {
-    ds::array_list<int> a = {1, -1, 2, 3, 2};
-
-
-    algo::bubble_sort(a.begin(), a.end());
-
-    for (const auto &i : a) {
+template <typename T>
+void print_array(ds::array_list<T> &v) {
+    for (const auto &i : v) {
         std::cout << i << " ";
     }
+}
 
+
+int main() {
+    ds::array_list<int> v = {1, 2, 3, 4, 5, 1, 2, 3};
+
+    algo::sort::heap_sort(v.begin(), v.end(), [](int a, int b) {
+        return a > b;
+    });
+    
+
+    print_array(v);
+    
     return 0;
 }
 

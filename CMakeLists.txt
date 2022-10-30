@@ -11,5 +11,5 @@ set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "main")
 
 target_link_libraries(${PROJECT_NAME}
     ds::array_list
-    algo::sorting
+    algo::sort
 )

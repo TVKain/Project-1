@@ -54,13 +54,22 @@ namespace ds {
         }
 
 
-        /* Copy Constructor */
+        /* Copy Constructor initialize array from a different array  */
         array_list(const array_list &a) {
             size_ = a.size();
             capacity_ = a.capacity_();
             data_ = new value_type[capacity_];
 
             std::copy(a.begin(), a.end(), data_);
+        }
+
+        /* Initialize from first iterator to last iterator */
+        array_list(iterator first, iterator last) {
+            size_ = last - first;
+            capacity_ = size_;
+            data_ = new value_type[capacity_];
+
+            std::copy(first, last, data_);
         }
 
         /* Iterators */

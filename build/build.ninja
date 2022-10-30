@@ -63,7 +63,7 @@ build cmake_object_order_depends_target_project1-1: phony || CMakeFiles/project1
 
 build CMakeFiles/project1-1.dir/src/main.cpp.o: CXX_COMPILER__project1-1 ../src/main.cpp || cmake_object_order_depends_target_project1-1
   DEP_FILE = CMakeFiles/project1-1.dir/src/main.cpp.o.d
-  INCLUDES = -I../data_structures/include -I../algorithms/include
+  INCLUDES = -I../data_structures/include -I../algorithms/include/heap -I../algorithms/include/sorting
   OBJECT_DIR = CMakeFiles/project1-1.dir
   OBJECT_FILE_DIR = CMakeFiles/project1-1.dir/src
   TARGET_COMPILE_PDB = CMakeFiles/project1-1.dir/
