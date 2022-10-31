@@ -2,8 +2,7 @@ cmake_minimum_required (VERSION 3.5)
 
 project(project1-1)
 
-add_subdirectory(data_structures)
-add_subdirectory(algorithms)
+add_subdirectory(libs test EXCLUDE_FROM_ALL)
 
 add_executable(${PROJECT_NAME} src/main.cpp)
 

@@ -1,30 +1,32 @@
-#include <iostream>
-#include <string>
-#include <algorithm>
-#include <cmath>
-#include <utility>
-
+#include "merge_sort.hpp"
 #include "array_list.hpp"
-#include "sort.hpp"
+#include <algorithm>
+#include <iostream>
 
-template <typename T>
-void print_array(ds::array_list<T> &v) {
-    for (const auto &i : v) {
+int main() 
+{
+    ds::array_list<int> a = {3, 2, 1, 8, 6, 7, 0, -10, 20, 30, 100, -44};
+
+    algo::sort::merge_sort_iterative(a.begin(), a.end());
+
+    ds::array_list<int> b = {8, 9, 3, -100, 20, 15, 22, 23, 24, 25, 9};
+
+    algo::sort::merge_sort_iterative(b.begin(), b.end());
+
+    for (const auto &i : a) {
+        std::cout << i << " "; 
+    }
+    std::cout << std::endl;
+
+    for (const auto &i : a) {
         std::cout << i << " ";
     }
-}
+    
+    if (!std::is_sorted(a.begin(), a.end()) || !std::is_sorted(b.begin(), b.end())) {
+        return 1;
+    }
 
-
-int main() {
-    ds::array_list<int> v = {1, 2, 3, 4, 5, 1, 2, 3};
-
-    algo::sort::heap_sort(v.begin(), v.end(), [](int a, int b) {
-        return a > b;
-    });
     
 
-    print_array(v);
-    
     return 0;
 }
-

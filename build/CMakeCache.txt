@@ -207,22 +207,34 @@ CMAKE_STRIP:FILEPATH=/usr/bin/strip
 CMAKE_VERBOSE_MAKEFILE:BOOL=FALSE
 
 //Value Computed by CMake
-algorithms_BINARY_DIR:STATIC=/mnt/c/Users/tvkain/Desktop/project-1/build/algorithms
+algorithms_BINARY_DIR:STATIC=/mnt/c/Users/tvkain/Desktop/project-1/build/test/algorithms
 
 //Value Computed by CMake
-algorithms_SOURCE_DIR:STATIC=/mnt/c/Users/tvkain/Desktop/project-1/algorithms
+algorithms_SOURCE_DIR:STATIC=/mnt/c/Users/tvkain/Desktop/project-1/libs/algorithms
 
 //Value Computed by CMake
-data_structures_BINARY_DIR:STATIC=/mnt/c/Users/tvkain/Desktop/project-1/build/data_structures
+data_structures_BINARY_DIR:STATIC=/mnt/c/Users/tvkain/Desktop/project-1/build/test/data_structures
 
 //Value Computed by CMake
-data_structures_SOURCE_DIR:STATIC=/mnt/c/Users/tvkain/Desktop/project-1/data_structures
+data_structures_SOURCE_DIR:STATIC=/mnt/c/Users/tvkain/Desktop/project-1/libs/data_structures
+
+//Value Computed by CMake
+libs_BINARY_DIR:STATIC=/mnt/c/Users/tvkain/Desktop/project-1/build/test
+
+//Value Computed by CMake
+libs_SOURCE_DIR:STATIC=/mnt/c/Users/tvkain/Desktop/project-1/libs
 
 //Value Computed by CMake
 project1-1_BINARY_DIR:STATIC=/mnt/c/Users/tvkain/Desktop/project-1/build
 
 //Value Computed by CMake
 project1-1_SOURCE_DIR:STATIC=/mnt/c/Users/tvkain/Desktop/project-1
+
+//Value Computed by CMake
+test_BINARY_DIR:STATIC=/mnt/c/Users/tvkain/Desktop/project-1/build/test/test
+
+//Value Computed by CMake
+test_SOURCE_DIR:STATIC=/mnt/c/Users/tvkain/Desktop/project-1/libs/test
 
 
 ########################
@@ -327,7 +339,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=3
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=5
 //ADVANCED property for variable: CMAKE_OBJCOPY
 CMAKE_OBJCOPY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_OBJDUMP
