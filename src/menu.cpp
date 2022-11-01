@@ -14,14 +14,17 @@
 #include <filesystem>
 
 void Menu::print_menu() {
+    std::cout << std::endl;
     std::cout << "      SORTING MENU" << std::endl;
     std::cout << "1. Choose input method" << std::endl;
     std::cout << "2. Choose sorting algorithm" << std::endl;
-    std::cout << "3. Run all sorting algorithms" << std::endl;
-    std::cout << "4. Exit" << std::endl;
+    std::cout << "3. Start sorting" << std::endl;
+    std::cout << "4. Run all sorting algorithms" << std::endl;
+    std::cout << "5. Exit" << std::endl;
 }
 
 void Menu::print_sorting_algorithms() {
+    std::cout << std::endl;
     std::cout << "  SORTING ALGORITHMS" << std::endl;
     std::cout << "1. Insertion Sort" << std::endl;
     std::cout << "2. Bubble Sort" << std::endl;
@@ -32,6 +35,7 @@ void Menu::print_sorting_algorithms() {
 }
 
 void Menu::print_input_methods() {
+    std::cout << std::endl;
     std::cout << "   Input Methods" << std::endl;
     std::cout << "1. Keyboard" << std::endl;
     std::cout << "2. File" << std::endl;
@@ -89,8 +93,6 @@ void Menu::input_array_random(std::size_t n) {
     for (; i < n; ++i) {
         array.push_back(utils::generate_random_num(-n * 4, n * 4));
     }
-
-    std::cout << "Generated random array" << std::endl;
 }
 
 void Menu::read_array_from_file() {
@@ -114,7 +116,7 @@ void Menu::read_array_from_file() {
 
 }
 
-void Menu::write_array_to_file(std::string sorting_algo, std::chrono::microseconds time_elapsed) {
+void Menu::write_array_to_file(std::string sorting_algo, std::chrono::nanoseconds time_elapsed) {
     std::string folder_name = utils::get_current_time();
 
     auto size = array.size();
@@ -129,19 +131,11 @@ void Menu::write_array_to_file(std::string sorting_algo, std::chrono::microsecon
     std::ofstream file(folder_name + "/" + file_name, std::ios::out);
 
     if (file.is_open()) {
+        file << time_elapsed.count() << " ns" << std::endl;
         for (const auto &i : array) {
             file << i << std::endl;
         }
         file.close();
-    } else {
-        std::cout << "Can not open file" << std::endl;
-    }
-
-    std::ofstream time_file(folder_name + "/" + file_name + "-" "time", std::ios::out);
-
-    if (time_file.is_open()) {
-        time_file << time_elapsed.count() << " microseconds";
-        time_file.close();
     } else {
         std::cout << "Can not open file" << std::endl;
     }
@@ -159,13 +153,14 @@ void Menu::sort_array() {
         return;
     }
     
-    std::chrono::microseconds elapsed;
+    std::chrono::nanoseconds elapsed;
 
     std::string sorting_algo;
     switch (sa) {
         case SortingAlgorithm::INSERTION_SORT: 
             sorting_algo = "insertion sort"; 
             elapsed = utils::bench_time(algo::sort::insertion_sort<int>, array.begin(), array.end());
+            
             break;
         case SortingAlgorithm::BUBBLE_SORT: 
             sorting_algo = "bubble sort"; 
@@ -206,41 +201,150 @@ void Menu::print_array() {
 void Menu::run_all_algorithms() {
     array.clear();
 
-    ds::array_list<std::pair<std::string, std::pair<int, std::chrono::microseconds>>> size_time;
-    ds::array_list<ds::array_list<int>> sorted_arrays;
+    ds::array_list<std::pair<int, std::chrono::nanoseconds>> insertion_data;
+    ds::array_list<std::pair<int, std::chrono::nanoseconds>> bubble_data;
+    ds::array_list<std::pair<int, std::chrono::nanoseconds>> heap_data;
+    ds::array_list<std::pair<int, std::chrono::nanoseconds>> merge_data;
+    ds::array_list<std::pair<int, std::chrono::nanoseconds>> quick_data;
 
 
-    std::chrono::microseconds elapsed;
-    for (int i = 10; i <= 1000000; i *= 10) {
-        input_array_random(i);
-        elapsed = utils::bench_time(algo::sort::insertion_sort<int>, array.begin(), array.end());
-        size_time.push_back(std::make_pair("INSERTION", std::make_pair(i, elapsed)));
-        sorted_arrays.push_back(array);
-        array.clear();
+    ds::array_list<std::pair<std::string, ds::array_list<std::pair<int, std::chrono::nanoseconds>>>> sorting_data;
 
-        input_array_random(i);
-        elapsed = utils::bench_time(algo::sort::insertion_sort<int>, array.begin(), array.end());
-        size_time.push_back(std::make_pair("BUBBLE", std::make_pair(i, elapsed)));
-        array.clear();
 
-        input_array_random(i);
-        elapsed = utils::bench_time(algo::sort::insertion_sort<int>, array.begin(), array.end());
-        size_time.push_back(std::make_pair("HEAP", std::make_pair(i, elapsed)));
-        array.clear();
+    std::chrono::nanoseconds elapsed;
+    for (int i = 10; i <= 100000; i *= 10) {
+        for (int j = 0; j < 5; ++j) {
+            input_array_random(i);
+            
+            switch (j) {
+                case 0: 
+                    elapsed = utils::bench_time(algo::sort::insertion_sort<int>, array.begin(), array.end()); 
+                    insertion_data.push_back(std::make_pair(i, elapsed));
+                break;
+                case 1: 
+                    elapsed = utils::bench_time(algo::sort::bubble_sort<int>, array.begin(), array.end()); 
+                    bubble_data.push_back(std::make_pair(i, elapsed));
+                break;
+                case 2: 
+                    elapsed = utils::bench_time(algo::sort::heap_sort<int>, array.begin(), array.end()); 
+                    heap_data.push_back(std::make_pair(i, elapsed));
+                break;
+                case 3: 
+                    elapsed = utils::bench_time(algo::sort::merge_sort_iterative<int>, array.begin(), array.end()); 
+                    merge_data.push_back(std::make_pair(i, elapsed));
+                break;
+                case 4: 
+                    elapsed = utils::bench_time(algo::sort::quick_sort_iterative<int>, array.begin(), array.end()); 
+                    quick_data.push_back(std::make_pair(i, elapsed));
+                break;
+                default: break;
+            }
 
-        input_array_random(i);
-        elapsed = utils::bench_time(algo::sort::insertion_sort<int>, array.begin(), array.end());
-        size_time.push_back(std::make_pair("MERGE", std::make_pair(i, elapsed)));
-        array.clear();
-
-        input_array_random(i);
-        elapsed = utils::bench_time(algo::sort::insertion_sort<int>, array.begin(), array.end());
-        size_time.push_back(std::make_pair("QUICK", std::make_pair(i, elapsed)));
-        array.clear();
+            
+            array.clear();
+        }
 
     }
 
+    sorting_data.push_back(std::make_pair("INSERTION", insertion_data));
+    sorting_data.push_back(std::make_pair("BUBBLE", bubble_data));
+    sorting_data.push_back(std::make_pair("HEAP", heap_data));
+    sorting_data.push_back(std::make_pair("MERGE", merge_data));
+    sorting_data.push_back(std::make_pair("QUICK", quick_data));
+
     
+    for (auto &elem : sorting_data) {
+        std::cout << elem.first << std::endl;
+        for (auto &j : elem.second) {
+            std::cout << "\tSize: " <<  j.first;
+            std::cout << "\tTime: " << j.second.count() << " ns" << std::endl; 
+        }
+    }
+
+    array.clear();
+}
 
 
+/* 
+ * Create 5 files
+ */
+void Menu::generate_data_for_report() {
+    array.clear();
+
+    ds::array_list<std::pair<int, std::chrono::nanoseconds>> insertion_data;
+    ds::array_list<std::pair<int, std::chrono::nanoseconds>> bubble_data;
+    ds::array_list<std::pair<int, std::chrono::nanoseconds>> heap_data;
+    ds::array_list<std::pair<int, std::chrono::nanoseconds>> merge_data;
+    ds::array_list<std::pair<int, std::chrono::nanoseconds>> quick_data;
+
+
+    ds::array_list<std::pair<std::string, ds::array_list<std::pair<int, std::chrono::nanoseconds>>>> sorting_data;
+
+
+    std::chrono::nanoseconds elapsed;
+    for (int i = 10; i <= 100000; i *= 10) {
+        for (int j = 0; j < 5; ++j) {
+            input_array_random(i);
+            
+            switch (j) {
+                case 0: 
+                    elapsed = utils::bench_time(algo::sort::insertion_sort<int>, array.begin(), array.end()); 
+                    insertion_data.push_back(std::make_pair(i, elapsed));
+                break;
+                case 1: 
+                    elapsed = utils::bench_time(algo::sort::bubble_sort<int>, array.begin(), array.end()); 
+                    bubble_data.push_back(std::make_pair(i, elapsed));
+                break;
+                case 2: 
+                    elapsed = utils::bench_time(algo::sort::heap_sort<int>, array.begin(), array.end()); 
+                    heap_data.push_back(std::make_pair(i, elapsed));
+                break;
+                case 3: 
+                    elapsed = utils::bench_time(algo::sort::merge_sort_iterative<int>, array.begin(), array.end()); 
+                    merge_data.push_back(std::make_pair(i, elapsed));
+                break;
+                case 4: 
+                    elapsed = utils::bench_time(algo::sort::quick_sort_iterative<int>, array.begin(), array.end()); 
+                    quick_data.push_back(std::make_pair(i, elapsed));
+                break;
+                default: break;
+            }
+
+            
+            array.clear();
+        }
+
+    }
+
+    sorting_data.push_back(std::make_pair("insertion", insertion_data));
+    sorting_data.push_back(std::make_pair("bubble", bubble_data));
+    sorting_data.push_back(std::make_pair("heap", heap_data));
+    sorting_data.push_back(std::make_pair("merge", merge_data));
+    sorting_data.push_back(std::make_pair("quick", quick_data));
+
+    for (auto i = 0; i < sorting_data.size(); ++i) {
+        std::ofstream file(sorting_data[i].first + ".txt", std::ios::out);
+
+        if (file.is_open()) {
+            for (auto &elem: sorting_data[i].second) {
+                file << elem.first << " " << elem.second.count() << std::endl;
+            }
+            file.close();
+        } else {
+            std::cout << "Can not open file" << std::endl;
+        }
+    }
+}
+
+
+int Menu::get_choice() {
+    return choice;
+}
+
+int Menu::get_im() {
+    return static_cast<int>(im);
+}
+
+int Menu::get_sa() {
+    return static_cast<int>(sa);
 }

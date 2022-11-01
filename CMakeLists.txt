@@ -14,6 +14,9 @@ set(CMAKE_CXX_STANDARD 17)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/data/array.txt
     ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)
 
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/data/array2.txt
+    ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)
+
 add_subdirectory(libs test EXCLUDE_FROM_ALL)
 
 add_executable(${PROJECT_NAME} ${SOURCES})
