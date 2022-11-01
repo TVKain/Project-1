@@ -12,11 +12,11 @@
 #include <algorithm>
 #include <limits>
 #include <stdexcept>
-
+#include <memory>
 
 namespace ds {
     
-    template <typename T>
+    template <typename T, class Allocator = std::allocator<T>>
     class array_list {
     
     public:
@@ -26,59 +26,14 @@ namespace ds {
         typedef T& reference;
         typedef T* iterator;
         typedef const T* const_iterator;
-
-        /* Constructors */
-
-        /* Initialize empty array */
-        array_list() : size_(0), capacity_(0) {
-            data_ = nullptr;
-        }
-
-        /* Initialize array with space allocated for n items */
-        array_list(size_type n) : size_(0), capacity_(n) {
-            data_ = new value_type[capacity_];
-        }
-
-        /* Initialize array with n items of value v*/
-        array_list(size_type n, value_type v) : size_(n), capacity_(n) {
-            data_ = new value_type[capacity_];
-            std::fill_n(data_, n, v);
-        }
-
-        /* Initialize array with initializer_list {} */
-        array_list(std::initializer_list<value_type> init_list) {
-            size_ = init_list.size();
-            capacity_ = init_list.size();
-            data_ = new value_type[capacity_];
-
-            std::copy(init_list.begin(), init_list.end(), data_);
-        }
-
-
-        /* Copy Constructor initialize array from a different array  */
-        array_list(const array_list &a) {
-            size_ = a.size();
-            capacity_ = a.capacity_();
-            data_ = new value_type[capacity_];
-
-            std::copy(a.begin(), a.end(), data_);
-        }
-
-        /* Initialize from first iterator to last iterator */
-        array_list(iterator first, iterator last) {
-            size_ = last - first;
-            capacity_ = size_;
-            data_ = new value_type[capacity_];
-
-            std::copy(first, last, data_);
-        }
+        typedef Allocator allocater_type;
 
         /* Iterators */
         iterator begin() {
             return data_;
         }
 
-        const_iterator cbegin() {
+        const_iterator cbegin() const {
             return data_;
         }
 
@@ -86,22 +41,8 @@ namespace ds {
             return data_ + size_;
         }
 
-        const_iterator cend() {
+        const_iterator cend() const {
             return data_ + size_;
-        }
-        /* Operators */
-
-        /* 
-         * Assignment operators
-         * This assignment operators will copy the array, it does not make another reference 
-         */
-        array_list& operator=(const array_list& a) {
-            return array_list(a);
-        }
-
-        /* Destructor */
-        ~array_list() {
-            delete[] data_;
         }
 
         /* Capacity */
@@ -126,6 +67,89 @@ namespace ds {
             return std::numeric_limits<size_type>::max();
         }
 
+        /* Constructors */
+
+        /* Initialize empty array */
+        array_list() : size_(0), capacity_(0) {
+            data_ = nullptr;
+        }
+
+        /* Initialize array with space allocated for n items */
+        array_list(size_type n) : size_(0), capacity_(n) {
+            data_ = allocator_.allocate(capacity_);
+        }
+
+        /* Initialize array with n items of value v*/
+        array_list(size_type n, value_type v) : size_(n), capacity_(n) {
+            data_ = allocator_.allocate(capacity_);
+            std::fill_n(data_, n, v);
+        }
+
+        /* Initialize array with initializer_list {} */
+        array_list(std::initializer_list<value_type> init_list) {
+            size_ = init_list.size();
+            capacity_ = init_list.size();
+            data_ = allocator_.allocate(capacity_);
+
+            std::copy(init_list.begin(), init_list.end(), data_);
+        }
+
+
+        /* Copy Constructor initialize array from a different array  */
+        
+        array_list(const array_list& a) {
+            size_ = a.size();
+            capacity_ = a.capacity();
+            data_ = allocator_.allocate(capacity_);
+
+            std::copy(a.cbegin(), a.cend(), data_);
+        }
+        
+        
+
+        /* Initialize from first iterator to last iterator */
+        array_list(iterator first, iterator last) {
+            size_ = last - first;
+            capacity_ = size_;
+            data_ = allocator_.allocate(capacity_);
+
+            std::copy(first, last, data_);
+        }
+
+
+
+        
+        /* Operators */
+
+        /* 
+         * Assignment operators
+         * This assignment operators will copy the array, it does not make another reference 
+         */
+        
+        array_list& operator=(const array_list& a) {
+            size_ = a.size();
+            capacity_ = a.capacity();
+            data_ = allocator_.allocate(capacity_);
+            
+            std::copy(a.cbegin(), a.cend(), data_);
+            return *this;
+        }
+        
+        
+
+        /* Destructor */
+        ~array_list() {
+            if (data_ != nullptr) {
+                for (size_type i = 0; i < size_; ++i) {
+                    allocator_.destroy(data_ + i);
+                }
+                allocator_.deallocate(data_, capacity_);
+                data_ = nullptr;
+            }
+        }
+
+        
+
         /* Allocate memory for new_cap elements*/
         void reserve(size_type new_cap) {
             if (new_cap > max_size()) {
@@ -145,7 +169,7 @@ namespace ds {
         /* Access element with boundary checking */
         reference at(size_type pos) {
             if (pos < 0 || pos > size_) {
-                throw std::out_of_range("Can not access index at %p", data_ + pos);
+                throw std::out_of_range("Can not access index at" + pos);
             }    
 
             return data_[pos];
@@ -182,13 +206,15 @@ namespace ds {
                 capacity_ == 0 ? realloc(1) : realloc(capacity_ * 2);
             }
 
-            data_[size_] = value;
+            allocator_.construct(data_ + size_, value);
             ++size_;
         }
 
         /* Clear the content of all elements in the array making */
         void clear() noexcept {
-            std::fill(data_, data_ + size_, value_type());
+            for (size_type i = 0; i < size(); ++i) {
+                allocator_.destroy(data_ + i);
+            }
 
             size_ = 0;
         }
@@ -198,26 +224,29 @@ namespace ds {
             if (size_ == 0) {
                 throw std::out_of_range("Can not pop_back() an empty array list");
             }
-            data_[size_ - 1] = value_type();
+            allocator_.destroy(end() - 1);
             --size_;
         }
 
         /* Resize the array fill them with default values if count is larger than current size */
         void resize(size_type count) {
-            realloc(count);
-
-            if (size_ < count) {
-                std::fill_n(begin() + size_, value_type());
-            }
+            resize(count, value_type());
         }
 
         /* Resize the array fill them with the value specifed if count is larger than current size */
         void resize(size_type count, const value_type& value) {
-            realloc(count);
-
-            if (size_ < count) {
-                std::fill_n(begin() + size_, value);
+            if (count > capacity_) {
+                realloc(count);
+                for (size_type i = size_; i < count; ++i) {
+                    allocator_.construct(data_ + i, value);
+                }
+            } else if (count < size_) {
+                for (size_type i = count; i < size_; ++i) {
+                    allocator_.destroy(data_ + i);
+                }
             }
+
+            size_ = count;
         }
 
         /* Insert an element to the position specified by the iterator pos */
@@ -236,7 +265,7 @@ namespace ds {
 
             std::copy(it, data_ + size_, it + 1);
             
-            data_[index] = value;
+            allocator_.construct(data_ + index, value);
             
             ++size_;
 
@@ -254,7 +283,7 @@ namespace ds {
             iterator it = data_ + index;
 
             std::copy(it + 1, data_ + size_, it);
-            data_[size_ - 1] = value_type();
+            allocator_.destroy(data_ + size_ -1);
             --size_;
 
             return it;
@@ -264,28 +293,25 @@ namespace ds {
         size_type size_;
         size_type capacity_;
         iterator data_; 
+        allocater_type allocator_;
+
 
         /**********************************************
          * Internal use to reallocate array 
          * if new_cap < size_ values will be truncated 
          **********************************************/
         void realloc(size_type new_cap) {
-            if (new_cap < size_) {
-                iterator new_data = new value_type[new_cap];
-                
-                delete[] (data_ + new_cap);
-                std::move(data_, data_ + new_cap, new_data);
-                size_ = new_cap;
-                capacity_ = new_cap;
-                data_ = new_data;
-                return;
+            T* new_data = allocator_.allocate(new_cap);
+
+            for (size_type i = 0; i < size_; ++i) {
+                allocator_.construct(new_data + i, std::move(data_[i]));
+                allocator_.destroy(data_ + i);
             }
 
-            iterator new_data = new value_type[new_cap];
-            std::move(data_, data_ + size_, new_data);
-            delete[] data_;
-            capacity_ = new_cap;
+            allocator_.deallocate(data_, capacity_);
+
             data_ = new_data;
+            capacity_ = new_cap;
         }
     };    
 }

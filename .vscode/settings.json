@@ -64,6 +64,14 @@
     "xhash": "cpp",
     "numeric": "cpp",
     "unordered_map": "cpp",
-    "array": "cpp"
+    "array": "cpp",
+    "chrono": "cpp",
+    "forward_list": "cpp",
+    "fstream": "cpp",
+    "iomanip": "cpp",
+    "optional": "cpp",
+    "sstream": "cpp",
+    "random": "cpp",
+    "filesystem": "cpp"
   }
 }

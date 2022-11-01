@@ -1,32 +1,20 @@
-#include "merge_sort.hpp"
+#include "sort.hpp"
 #include "array_list.hpp"
+//#include "menu.hpp"
 #include <algorithm>
 #include <iostream>
 
-int main() 
-{
-    ds::array_list<int> a = {3, 2, 1, 8, 6, 7, 0, -10, 20, 30, 100, -44};
+#include <string>
 
-    algo::sort::merge_sort_iterative(a.begin(), a.end());
+int main() {
+    ds::array_list<std::string> a;
 
-    ds::array_list<int> b = {8, 9, 3, -100, 20, 15, 22, 23, 24, 25, 9};
-
-    algo::sort::merge_sort_iterative(b.begin(), b.end());
-
-    for (const auto &i : a) {
-        std::cout << i << " "; 
-    }
-    std::cout << std::endl;
-
-    for (const auto &i : a) {
-        std::cout << i << " ";
-    }
-    
-    if (!std::is_sorted(a.begin(), a.end()) || !std::is_sorted(b.begin(), b.end())) {
-        return 1;
-    }
-
-    
+    a.push_back("Hi");
+    a.push_back("Hello");
+    a.push_back("Shit");
+    a.push_back("hmmm");
+    a.push_back("hmmm");
+    std::cout << a[0];
 
     return 0;
 }

@@ -11,6 +11,24 @@ int main() {
         return 1;
     }
 
+    a.clear();
+
+    if (a.size() != 0) {
+        return 1;
+    }
+
+    a.push_back(4);
+    a.push_back(2);
+    a.push_back(69);
+
+    if (a.size() != 3) {
+        return 1;
+    }
+
+    if (a[1] != 2) {
+        return 1;
+    }
+
 
     return 0;
 }
