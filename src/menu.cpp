@@ -210,30 +210,36 @@ void Menu::run_all_algorithms() {
 
     ds::array_list<std::pair<std::string, ds::array_list<std::pair<int, std::chrono::nanoseconds>>>> sorting_data;
 
-
+    std::cout << std::endl;
     std::chrono::nanoseconds elapsed;
     for (int i = 10; i <= 100000; i *= 10) {
         for (int j = 0; j < 5; ++j) {
             input_array_random(i);
             
+
             switch (j) {
                 case 0: 
+                    std::cout << "INSERTION " << i << std::endl;
                     elapsed = utils::bench_time(algo::sort::insertion_sort<int>, array.begin(), array.end()); 
                     insertion_data.push_back(std::make_pair(i, elapsed));
                 break;
                 case 1: 
+                    std::cout << "BUBBLE " << i << std::endl;
                     elapsed = utils::bench_time(algo::sort::bubble_sort<int>, array.begin(), array.end()); 
                     bubble_data.push_back(std::make_pair(i, elapsed));
                 break;
                 case 2: 
+                    std::cout << "HEAP " << i << std::endl;
                     elapsed = utils::bench_time(algo::sort::heap_sort<int>, array.begin(), array.end()); 
                     heap_data.push_back(std::make_pair(i, elapsed));
                 break;
                 case 3: 
+                    std::cout << "MERGE " << i << std::endl;
                     elapsed = utils::bench_time(algo::sort::merge_sort_iterative<int>, array.begin(), array.end()); 
                     merge_data.push_back(std::make_pair(i, elapsed));
                 break;
                 case 4: 
+                    std::cout << "QUICK " << i << std::endl;
                     elapsed = utils::bench_time(algo::sort::quick_sort_iterative<int>, array.begin(), array.end()); 
                     quick_data.push_back(std::make_pair(i, elapsed));
                 break;
@@ -245,6 +251,7 @@ void Menu::run_all_algorithms() {
         }
 
     }
+    std::cout << std::endl;
 
     sorting_data.push_back(std::make_pair("INSERTION", insertion_data));
     sorting_data.push_back(std::make_pair("BUBBLE", bubble_data));
