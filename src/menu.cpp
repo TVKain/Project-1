@@ -282,7 +282,7 @@ void Menu::generate_data_for_report() {
 
 
     std::chrono::nanoseconds elapsed;
-    for (int i = 10; i <= 100000; i *= 10) {
+    for (int i = 10; i <= 2000; i++) {
         for (int j = 0; j < 5; ++j) {
             input_array_random(i);
             

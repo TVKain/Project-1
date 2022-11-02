@@ -10,10 +10,6 @@
 
 int main() {
     Menu menu;
-
-    /*
-    
-    
     
     for (;;) {
         menu.print_menu();
@@ -46,6 +42,7 @@ int main() {
                 menu.input_array_file();
             } else if (menu.get_im() == 3) {
                 menu.input_array_random(utils::generate_random_num(10, 100));
+                std::cout << "Generated random array" << std::endl;
             }
 
         } else if (menu.get_choice() == 2) {
@@ -65,10 +62,6 @@ int main() {
         }
 
     }   
-
-    */
-
-    menu.generate_data_for_report();
 
     return 0;
 }
