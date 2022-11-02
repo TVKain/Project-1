@@ -8,19 +8,19 @@
     sudo apt install ninja-build
 `
 ## Build and run with make 
-`
+```
     mkdir build
     cd build
     cmake ..
     make 
     ./main
-`
+```
 ## Build and run with ninja
-`
+```
     mkdir build
     cd build
     cmake .. -G Ninja
     ninja
     ./main
-`
+```
 
