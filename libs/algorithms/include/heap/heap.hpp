@@ -26,7 +26,6 @@ namespace algo {
             while (true) {
                 auto l = left(index);
                 auto r = right(index);
-                
 
                 if (l < size && compare(*(first + index), *(first + l))) {
                     elem = l;
@@ -52,7 +51,7 @@ namespace algo {
         void make_heap(T *first, T *last) {
             auto size = last - first;
 
-            for (auto i = size / 2; i >= 0; --i) {
+            for (auto i = size / 2 - 1; i >= 0; --i) {
                 heapify(first, last, i, [](const T &a, const T &b) {
                     return a < b;
                 });
@@ -62,7 +61,7 @@ namespace algo {
         template <typename T, typename Compare>
         void make_heap(T *first, T *last, Compare compare) {
             auto size = last - first;
-            for (auto i = size / 2; i >= 0; --i) {
+            for (auto i = size / 2 - 1; i >= 0; --i) {
                 heapify(first, last, i, compare);
             }
         }
