@@ -117,8 +117,6 @@ namespace ds {
         }
 
 
-
-        
         /* Operators */
 
         /* 
@@ -281,9 +279,9 @@ namespace ds {
             }
 
             iterator it = data_ + index;
-
+            
             std::copy(it + 1, data_ + size_, it);
-            allocator_.destroy(data_ + size_ -1);
+            allocator_.destroy(data_ + size_ - 1);
             --size_;
 
             return it;

@@ -1,6 +1,7 @@
 #include "sort.hpp"
 #include "array_list.hpp"
 #include "menu.hpp"
+#include "heap.hpp"
 #include "utils.hpp"
 #include <algorithm>
 #include <iostream>
@@ -62,6 +63,7 @@ int main() {
         }
 
     }   
+  
 
     return 0;
 }
